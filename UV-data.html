@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UV Data</title>
+</head>
+<body>
+    <div id="uv-output"></div> <!-- Output will be shown here -->
+
+    <script>
+        const apiKey = 'openuv-jne90r9rm2ax74qi-io'; // Your API key
+
+        function getUVData(latitude, longitude, altitude = 100) {
+            const url = `https://api.openuv.io/api/v1/uv?lat=${latitude}&lng=${longitude}&alt=${altitude}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': apiKey
+                },
+            })
+            .then(res => res.json())  // Parses the response as JSON
+            .then(data => {
+                // Output the result to an HTML element
+                document.getElementById('uv-output').innerHTML = `
+                    <p>UV data for coordinates (${latitude}, ${longitude}):</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            })
+            .catch(err => console.log('Error fetching data:', err));
+        }
+
+        // Example usage:
+        const latitudeSF = 30.2672;    // San Francisco latitude
+        const longitudeSF = 97.7431; // San Francisco longitude
+
+        // Fetch UV data for San Francisco
+        getUVData(latitudeSF, longitudeSF);
+    </script>
+</body>
+</html>
